@@ -1,22 +1,20 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { Product } from '../../../../modules/product.model';
+import { Component, EventEmitter, Input, Output} from '@angular/core';
+import { Product } from '../../../shared/models/product.model';
+import { CommonModule } from '@angular/common';
+import { TimeAgoPipe } from '@/shared/pipes/time-ago.pipe';
 
 @Component({
   selector: 'app-product',
   standalone: true,
-  imports: [],
+  imports: [
+    CommonModule,
+    TimeAgoPipe
+  ],
   templateUrl: './product.component.html',
   styleUrl: './product.component.css'
 })
 export class ProductComponent {
-  @Input({required: true}) product: Product = {
-    title: '',
-    price: 0,
-    img: '',
-    id: ''
-  }
-
-
+  @Input({required: true}) product!: Product;
   @Output() addToCart = new EventEmitter();
 
   addToCartHandler(){
