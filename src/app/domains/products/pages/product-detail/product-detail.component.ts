@@ -12,8 +12,8 @@ import { ActivatedRoute } from '@angular/router';
   imports: [CommonModule],
   templateUrl: './product-detail.component.html',
   styleUrl: './product-detail.component.css'
-})
-export class ProductDetailComponent implements OnChanges {
+}) 
+export default class ProductDetailComponent implements OnChanges {
   private productService = inject(ProductService);
   private cartService = inject(CartService);
 

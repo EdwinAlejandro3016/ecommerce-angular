@@ -12,42 +12,27 @@ export class ProductService {
   products = signal<Product[]>([]);
   productsByCategory = signal<Product[]>([]);
 
-  categoryIdSelected = signal<string>("all");
-
-  constructor(){
-    effect(()=>{
-      const categoryIdSelected = this.categoryIdSelected();
-      if(categoryIdSelected){
-        this.getProductsByCategory(categoryIdSelected);
-      }
-    },{allowSignalWrites:true})
-  }
-
-  getProducts(){
-    return this.http.get<Product[]>(`${this.apiUrl}/products`);
+  getProducts(category_id?:string){
+    const url = new URL(`${this.apiUrl}/products`);
+    if(category_id){
+      url.searchParams.set('categoryId',category_id);
+    }
+    return this.http.get<Product[]>(url.toString());
   }
 
   getProduct(id: number){
     return this.http.get<Product>(`${this.apiUrl}/products/${id}`);
   }
 
-  getCategories(){
-    return this.http.get<Category[]>(`${this.apiUrl}/categories`);
-  }
-
   getProductsByCategory(categoryId: string){
-    //if category is all there's not necesatity to make the request
     if(categoryId === 'all'){
       this.productsByCategory.set(this.products());
       return;
     }
-    this.http.get<Product[]>(`${this.apiUrl}/products/`,{params: {categoryId}})
+    this.getProducts(categoryId)
     .subscribe({
-      next: res=>{
+      next: res=> {
         this.productsByCategory.set(res);
-      },
-      error: ()=>{
-
       }
     })
   }

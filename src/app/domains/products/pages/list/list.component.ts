@@ -16,7 +16,7 @@ import { SelectCategoriesComponent } from '@/shared/components/select-categories
   templateUrl: './list.component.html',
   styleUrl: './list.component.css'
 })
-export class ListComponent implements OnInit{
+export default class ListComponent implements OnInit{
   private cartService = inject(CartService);
   private productService = inject(ProductService);
 
@@ -34,6 +34,10 @@ export class ListComponent implements OnInit{
   }
 
   ngOnInit(): void {
+    this.getProducts();
+  }
+
+  private getProducts(){
     const products = this.productService.getProducts()
     .subscribe({
       next: res=>{
